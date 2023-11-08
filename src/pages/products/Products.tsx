@@ -1,9 +1,10 @@
 import { useState } from "react";
-import "./Products.scss";
+import "./products.scss";
 import DataTable from "../../components/dataTable/DataTable";
 import Add from "../../components/add/Add";
 import { GridColDef } from "@mui/x-data-grid";
 import { products } from "../../data";
+import { useQuery } from "@tanstack/react-query";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -58,13 +59,13 @@ const Products = () => {
 
   // TEST THE API
 
-  // const { isLoading, data } = useQuery({
-  //   queryKey: ["allproducts"],
-  //   queryFn: () =>
-  //     fetch("http://localhost:8800/api/products").then(
-  //       (res) => res.json()
-  //     ),
-  // });
+  const { isLoading, data } = useQuery({
+    queryKey: ["allproducts"],
+    queryFn: () =>
+      fetch("https://obscure-space-memory-q79gw94jxjv3x9q6-8800.app.github.dev/api/products").then(
+        (res) => res.json()
+      ),
+  });
 
   return (
     <div className="products">
@@ -75,11 +76,11 @@ const Products = () => {
       <DataTable slug="products" columns={columns} rows={products} />
       {/* TEST THE API */}
 
-      {/* {isLoading ? (
+      {isLoading ? (
         "Loading..."
       ) : (
         <DataTable slug="products" columns={columns} rows={data} />
-      )} */}
+      )}
       {open && <Add slug="product" columns={columns} setOpen={setOpen} />}
     </div>
   );
